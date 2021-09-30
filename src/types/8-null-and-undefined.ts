@@ -1,6 +1,5 @@
 let u: undefined = undefined;
 let n: null = null;
-
 let number: number = 7;
 
 //! --------------------------------- Invalid -------------------------------- */
