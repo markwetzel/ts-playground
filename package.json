@@ -1,0 +1,15 @@
+{
+  "name": "ts-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mark Wetzel",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.13",
+    "typescript": "^4.4.3"
+  }
+}
