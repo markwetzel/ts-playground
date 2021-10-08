@@ -30,7 +30,9 @@ interface IBirthdayEvent {
 
 // Concrete implementations of both interfaces
 class Subject implements ISubject {
+  // Loose coupling: only knows about the observer's interface
   observers: IObserver[] = [];
+  // Less loose
   birthdayEvent: IBirthdayEvent;
 
   constructor(...o: IObserver[]) {
@@ -62,17 +64,24 @@ class Subject implements ISubject {
 
 class Observer implements IObserver {
   private _name: string;
+  // Not technically required but useful in order to unsubscribe self in the future
+  private _subject: ISubject;
 
   public get name(): string {
     return this._name;
   }
 
-  constructor(name: string) {
+  constructor(name: string, subject: ISubject) {
     this._name = name;
+    this._subject = subject;
   }
 
   public toString(): string {
     return this._name;
+  }
+
+  leaveFamily(): void {
+    this._subject.removeObserver(this);
   }
 
   update(birthdayEvent: IBirthdayEvent): void {
@@ -86,11 +95,11 @@ class Observer implements IObserver {
 const family = new Subject();
 
 // Observers
-const mark = new Observer("Mark");
-const dan = new Observer("Daniel");
-const matt = new Observer("Matthew");
-const jennifer = new Observer("Jennifer");
-const rebecca = new Observer("Rebecca");
+const mark = new Observer("Mark", family);
+const dan = new Observer("Daniel", family);
+const matt = new Observer("Matthew", family);
+const jennifer = new Observer("Jennifer", family);
+const rebecca = new Observer("Rebecca", family);
 const observers = [rebecca, jennifer, mark, dan, matt];
 
 // 1) Register the observers
@@ -104,7 +113,8 @@ family.setNextBirthday({ nameOfPerson: "Rebecca", birthday: "11/5/2021" });
 console.log();
 
 // 3) Unsubscribe someone from the Subject
-family.removeObserver(jennifer);
+// family.removeObserver(jennifer);
+jennifer.leaveFamily();
 console.log();
 
 // 4) Update state again to confirm Jennifer has indeed been kicked out of family
